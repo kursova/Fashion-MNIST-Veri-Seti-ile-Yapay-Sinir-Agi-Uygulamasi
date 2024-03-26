@@ -1,0 +1,1 @@
+# Fashion-MNIST-Veri-Seti-ile-Yapay-Sinir-Agi-Uygulamasi
