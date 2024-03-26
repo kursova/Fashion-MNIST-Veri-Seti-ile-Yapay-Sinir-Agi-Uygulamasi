@@ -1,5 +1,5 @@
 # Fashion MNIST Veri Seti ile Yapay Sinir Ağı Uygulaması
-Bu proje, Fashion MNIST veri setini kullanarak yapay sinir ağı (neural network) modeli geliştirdiğim bir çalışmayı içerir. Proje, giyim eşyalarının resimlerini tanımak için bir yapay sinir ağı oluşturur ve bu ağın eğitim ve test başarısını değerlendirir. Örnek veri aşağıdaki gibidir.-:
+Bu proje, Fashion MNIST veri setini kullanarak yapay sinir ağı (neural network) modeli geliştirdiğim bir çalışmayı içerir. Proje, giyim eşyalarının resimlerini tanımak için bir yapay sinir ağı oluşturur ve bu ağın eğitim ve test başarısını değerlendirir. Örnek veri aşağıdaki gibidir.:
 ![image](https://github.com/kursova/Fashion-MNIST-Veri-Seti-ile-Yapay-Sinir-Agi-Uygulamasi/assets/9978930/65d699c4-1e96-45a6-bb30-409a1615a06f)
 
 ## Proje Açıklaması 
