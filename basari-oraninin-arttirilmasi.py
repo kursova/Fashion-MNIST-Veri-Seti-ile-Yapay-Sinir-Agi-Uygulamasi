@@ -1,23 +1,5 @@
-
-
-import numpy as np # linear algebra
-import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
-
-# Input data files are available in the read-only "../input/" directory
-# For example, running this (by clicking run or pressing Shift+Enter) will list all files under the input directory
-
-import os
-for dirname, _, filenames in os.walk('/kaggle/input'):
-    for filename in filenames:
-        print(os.path.join(dirname, filename))
-
-# You can write up to 20GB to the current directory (/kaggle/working/) that gets preserved as output when you create a version using "Save & Run All" 
-# You can also write temporary files to /kaggle/temp/, but they won't be saved outside of the current session
-
-
 #gerekli kütüphaneleri yükleme
 import tensorflow as tf
-
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -26,18 +8,36 @@ fashion_mnist = tf.keras.datasets.fashion_mnist
 
 (train_images, train_labels), (test_images, test_labels) = fashion_mnist.load_data()
 
-#normalleştirme
+'''Fashion MNIST veri seti 10 kategoride toplamda 70.000 gri tonlamalı görüntü içerir. 
+Görüntüler, (28 x 28 piksel) tek tek giyim eşyalarını göstermektedir'''
+
+#örnek veri (eğitim verisi)
+plt.figure()
+plt.imshow(train_images[0])
+plt.colorbar()
+plt.grid(False)
+plt.show()
+
+
+#örnek veri (eğitim verisi)
+plt.figure()
+plt.imshow(test_images[0])
+plt.colorbar()
+plt.grid(False)
+plt.show()
+
+#normalleştirme (değeleri 0-1 arasında gösterme)
 train_images = train_images / 255.0
 
 test_images = test_images / 255.0
 
-#modeli kurma
+#modeli kurma (burada farklı fonksiyonlar denedim. En alttaki yorumlarda nasıl sonuçlar verdiklerini yazdım.)
 model = tf.keras.Sequential([
     tf.keras.layers.Flatten(input_shape=(28, 28)),
-    tf.keras.layers.Dense(8, activation='elu'), #nöron sayısını değiştirdim.
-    
+    tf.keras.layers.Dense(8, activation='elu'), #nöron sayısını değiştirdim.    
     tf.keras.layers.Dense(16, activation=tf.keras.layers.LeakyReLU(alpha=0.1)),
     tf.keras.layers.Dense(32, activation='gelu'), #katman ekledim
+    tf.keras.layers.Dropout(0.1), #düzenlileştirme
     tf.keras.layers.Dense(64, activation='elu'), #katman ekledim
     tf.keras.layers.Dropout(0.2), #düzenlileştirme
     tf.keras.layers.Dense(10,activation="softmax")
@@ -56,7 +56,7 @@ model.compile(optimizer='adam', #optimizerı adagrad olarak değiştirdim.
 
 #uygulama
 
-hist=model.fit(train_images, train_labels,validation_data=(test_images,test_labels), epochs=10)
+hist=model.fit(train_images, train_labels,validation_data=(test_images,test_labels), epochs=8)
 
 test_loss, test_acc = model.evaluate(test_images,  test_labels, verbose=2)
 
@@ -119,7 +119,38 @@ plt.show()
 # aktivasyon fonksiyonlarını değiştirelim
 #leaklyrelu: Eğitim Doğruluğu:  0.8445333242416382 Test Doğruluğu:  0.8450999855995178 Eğitim Kaybı:  0.42953500151634216 Test Kaybı:  0.4341968894004822
 #swih: Eğitim Doğruluğu:  0.839900016784668 Test Doğruluğu:  0.8389999866485596 Eğitim Kaybı:  0.43628203868865967 Test Kaybı:  0.4351336658000946
-#drop out son katmana eklendi:(overfitting var gibi) Eğitim Doğruluğu:  0.8705166578292847 Test Doğruluğu:  0.8529999852180481 Eğitim Kaybı:  0.35146471858024597 Test Kaybı:  0.4062526822090149
-#drop out 0.2 yaptım: Eğitim Doğruluğu:  0.8673333525657654 Test Doğruluğu:  0.8460000157356262 Eğitim Kaybı:  0.36401379108428955 Test Kaybı:  0.4285202622413635
-#gelu kullandığımızda: Eğitim Doğruluğu:  0.8684999942779541 Test Doğruluğu:  0.8529000282287598 Eğitim Kaybı:  0.356443852186203 Test Kaybı:  0.3989572525024414
-#epoch değerinini arttırdığımızda overfitting oluştu: Eğitim Doğruluğu:  0.886650025844574 Test Doğruluğu:  0.8589000105857849 Eğitim Kaybı:  0.31096816062927246 Test Kaybı:  0.3975276052951813
+
+#diğer denemeler
+#drop out son katmana eklendi:(overfitting var gibi) 
+'''
+Eğitim Doğruluğu:  0.8705166578292847 Test Doğruluğu:  0.8529999852180481 Eğitim Kaybı:  0.35146471858024597 Test Kaybı:  0.4062526822090149
+'''
+#drop out 0.2 yaptım: 
+'''
+Eğitim Doğruluğu:  0.8673333525657654 Test Doğruluğu:  0.8460000157356262 Eğitim Kaybı:  0.36401379108428955 Test Kaybı:  0.4285202622413635
+'''
+#gelu kullandığımızda: 
+'''
+Eğitim Doğruluğu:  0.8684999942779541 Test Doğruluğu:  0.8529000282287598 Eğitim Kaybı:  0.356443852186203 Test Kaybı:  0.3989572525024414
+'''
+#epoch değerinini arttırdığımızda overfitting oluştu: 
+''' 
+Eğitim Doğruluğu:   0.886650025844574 
+Test Doğruluğu:     0.8589000105857849 
+Eğitim Kaybı:       0.31096816062927246 
+Test Kaybı:         0.3975276052951813
+'''
+#overfitting ihtimalini azaltabilmek için bir drop out daha ekledim. eğitim doğruluğu ve test doğruluğu birbirine yaklaştı: 
+''' 
+Eğitim Doğruluğu:   0.8673833608627319
+Test Doğruluğu:     0.8547999858856201
+Eğitim Kaybı:       0.37093308568000793
+Test Kaybı:         0.4052676260471344
+'''
+#8 epochtan sonra eğitim ve test verisi arasında fark artıyordu bu nedenle epoch değerini 8'e düşürdüm:
+'''
+Eğitim Doğruluğu:   0.8628666400909424
+Test Doğruluğu:     0.8468000292778015
+Eğitim Kaybı:       0.37758514285087585
+Test Kaybı:         0.41748255491256714
+'''
