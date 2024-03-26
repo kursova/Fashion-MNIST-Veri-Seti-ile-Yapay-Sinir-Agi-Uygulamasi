@@ -12,6 +12,7 @@ fashion_mnist = tf.keras.datasets.fashion_mnist
 Fashion MNIST veri seti 10 kategoride toplamda 70.000 gri tonlamalı görüntü içerir. 
 Görüntüler, (28 x 28 piksel) tek tek giyim eşyalarını göstermektedir
 '''
+![image](https://raw.githubusercontent.com/kursova/Fashion-MNIST-Veri-Seti-ile-Yapay-Sinir-Agi-Uygulamasi/main/images/__results___0_8.png)
 
 #örnek veri (eğitim verisi)
 plt.figure()
