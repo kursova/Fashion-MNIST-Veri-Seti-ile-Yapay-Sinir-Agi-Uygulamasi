@@ -20,6 +20,7 @@ plt.colorbar()
 plt.grid(False)
 plt.show()
 
+https://github.com/kursova/Fashion-MNIST-Veri-Seti-ile-Yapay-Sinir-Agi-Uygulamasi/blob/main/__results___0_9.png?raw=true
 
 #örnek veri (test verisi)
 plt.figure()
