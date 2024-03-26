@@ -1,14 +1,16 @@
 # Fashion MNIST Veri Seti ile Yapay Sinir Ağı Uygulaması
-Bu proje, Fashion MNIST veri setini kullanarak yapay sinir ağı (neural network) modeli geliştirdiğim bir çalışmayı içerir. Proje, giyim eşyalarının resimlerini tanımak için bir yapay sinir ağı oluşturur ve bu ağın eğitim ve test başarısını değerlendirir. Örnek veri aşağıdaki gibidir.:
+Bu proje, Fashion MNIST veri setini kullanarak yapay sinir ağı (neural network) modeli geliştirdiğim bir çalışmayı içerir. Proje, giyim eşyalarının resimlerini tanımak için bir yapay sinir ağı oluşturur ve bu ağın eğitim ve test başarısını değerlendirir. Veri seti aşağıdaki gibidir.:
 ![image](https://github.com/kursova/Fashion-MNIST-Veri-Seti-ile-Yapay-Sinir-Agi-Uygulamasi/assets/9978930/65d699c4-1e96-45a6-bb30-409a1615a06f)
 
 ## Proje Açıklaması 
 Fashion MNIST veri seti, giysi ve aksesuarların siyah-beyaz görüntülerinden oluşan bir veri kümesidir. Bu projede, Fashion MNIST veri setini kullanarak bir yapay sinir ağı modeli geliştirilmiş ve eğitilmiştir. Ağın amacı, bir görüntüdeki giysi veya aksesuarın türünü doğru bir şekilde tahmin etmektir. 
+
 ## Proje İçeriği  
 **Veri Yüklemesi**: Fashion MNIST veri seti TensorFlow kütüphanesi aracılığıyla yüklenmiştir. Eğitim ve test veri setleri olarak ayrılmıştır.
 **Model Oluşturma**: Yapay sinir ağı modeli, TensorFlow ve Keras kullanılarak oluşturulmuştur. Model, giriş katmanı, gizli katman(lar) ve çıkış katmanı içerir. 
 **Eğitim ve Değerlendirme**: Model, eğitim veri seti üzerinde eğitilmiş ve ardından test veri seti üzerinde değerlendirilmiştir. Eğitim ve test başarısı kaydedilmiş ve sonuçlar analiz edilmiştir. 
 
+```
 #gerekli kütüphaneleri yükleme
 import tensorflow as tf
 import numpy as np
@@ -19,27 +21,31 @@ fashion_mnist = tf.keras.datasets.fashion_mnist
 
 (train_images, train_labels), (test_images, test_labels) = fashion_mnist.load_data()
 
-'''
 Fashion MNIST veri seti 10 kategoride toplamda 70.000 gri tonlamalı görüntü içerir. 
 Görüntüler, (28 x 28 piksel) tek tek giyim eşyalarını göstermektedir
-'''
 
+```
 
+```
 #örnek veri (eğitim verisi)
 plt.figure()
 plt.imshow(train_images[0])
 plt.colorbar()
 plt.grid(False)
 plt.show()
+```
 ![image](https://www.kaggleusercontent.com/kf/168832389/eyJhbGciOiJkaXIiLCJlbmMiOiJBMTI4Q0JDLUhTMjU2In0..ZIAgGu5FmZjqpfSEBKJfrg.y336fifw-ixlQ2n2jJVPDfxOoC2OWW6-k_UcgBgSHwYdyVclWetQ_xYzmSdRv4fdXlMuOXvpg3PffCjrS5ru6s2JbP7MS-tmiogvcU4ooxXno0NHsfCPL5i20UBwAX-4FaoYkejwS2_4VcJREEMotSxRupCG3tcAEIwq9BAJM7fldpclMgPaBURRHCLUrYJ_1C2KcVrqd7ttpoVp7Zlvm12k3zgmnzBmH_J1KXG7vmfHJaHFzhPiGX06elhSS2rhnUeLL7sTiw7uJJweVm_Bx1AQUmCYl4l_fFzqPRtxgabb1g5seRjZwhAxviboc8X8EFRU6ib2k8QcCCh1cm0-yIJ9zEe_8VaFq1UFtKN6fXnUZ53R3_W5UcQPotgZSHbVZaS-eBvLM2CnHnEdt237XLdX48vWqaJmRFs4g2aAmv9wgweVWFXocVOfaz8f6sX6zdYpYxHVfFY3iWWPioT_y2ZQ1-x9gn0olY08-0tj25P_4qk1B3GKPs9z6pOtFO_QrhVILln6Ila5c1rWV9Qu2pPt0RFdYGbFl6QQNFh7JxuQNAubYwhDhrtG36ykoEsy_N9leOFvmG80ZrEg5DUdanriZSPI69kcoHzw2qTLqa6YPm6J21jq2Cc_ysazyNKbV1YuBqAePj3DrArNQ0q7_uWChHAeXM18TzTyMAE029IbDQ1ghwG9E-FHqFspbt6Q.qCa4-fZDBe-vIQ832BKIcg/__results___files/__results___0_0.png)   
-
+```
 # örnek veri (test verisi)
 plt.figure()
 plt.imshow(test_images[0])
 plt.colorbar()
 plt.grid(False)
 plt.show()
+```
+![image](https://github.com/kursova/Fashion-MNIST-Veri-Seti-ile-Yapay-Sinir-Agi-Uygulamasi/assets/9978930/84bea948-b403-457e-a2d7-2a988b428aee)
 
+```
 # normalleştirme (değeleri 0-1 arasında gösterme)
 train_images = train_images / 255.0
 
@@ -60,6 +66,11 @@ model = tf.keras.Sequential([
 # özet
 model.summary()
 
+```
+
+![image](https://github.com/kursova/Fashion-MNIST-Veri-Seti-ile-Yapay-Sinir-Agi-Uygulamasi/assets/9978930/035a0c8a-b61b-4d2c-bf1f-98c37337e3cc)
+
+```
 # modeli derleyelim (compile)
 model.compile(optimizer='adam', #diğer optimizasyon yöntemleri: SGD, Adadelta, Adagrad, RMSProd
               loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),#verilerimiz 0-1 arasında değişseydi CategoricalCrossentropy kullanırdık.
@@ -68,6 +79,11 @@ model.compile(optimizer='adam', #diğer optimizasyon yöntemleri: SGD, Adadelta,
 # uygulama
 
 hist=model.fit(train_images, train_labels,validation_data=(test_images,test_labels), epochs=8) #farklı epoch numaraları denedik.
+```
+
+![image](https://github.com/kursova/Fashion-MNIST-Veri-Seti-ile-Yapay-Sinir-Agi-Uygulamasi/assets/9978930/99671f25-e403-4ae3-a4b1-611c2ee53404)
+
+```
 
 test_loss, test_acc = model.evaluate(test_images,  test_labels, verbose=2)
 
@@ -80,22 +96,29 @@ print("Eğitim Kaybı: ",
      hist.history['loss'][-1])
 print("Test Kaybı: ",
      hist.history['val_loss'][-1])
+```
+![image](https://github.com/kursova/Fashion-MNIST-Veri-Seti-ile-Yapay-Sinir-Agi-Uygulamasi/assets/9978930/30cbf6a5-941a-4422-a49b-97eda3eacd5d)
 
- # Eğitim ve dtest doğrulama kaybını ve doğruluğunu görselleştirme 
-    
+```
+ # Eğitim ve dtest doğrulama kaybını ve doğruluğunu görselleştirme    
 plt.plot(hist.history['loss'], label='Eğitim Kaybı') 
 plt.plot(hist.history['val_loss'], label='Doğrulama Kaybı') 
 plt.xlabel('Epoch')
 plt.ylabel('Kayıp') 
 plt.legend() 
 plt.show() 
+```
+![image](https://github.com/kursova/Fashion-MNIST-Veri-Seti-ile-Yapay-Sinir-Agi-Uygulamasi/assets/9978930/196aef7d-fe20-405c-8424-ba4b0c31f90e)
 
+```
 plt.plot(hist.history['accuracy'], label='Eğitim Doğruluğu') 
 plt.plot(hist.history['val_accuracy'], label='Doğrulama Doğruluğu') 
 plt.xlabel('Epoch') 
 plt.ylabel('Doğruluk') 
 plt.legend() 
 plt.show()
+```
+![image](https://github.com/kursova/Fashion-MNIST-Veri-Seti-ile-Yapay-Sinir-Agi-Uygulamasi/assets/9978930/a9ae0c71-db3d-48c2-8826-db97f16b9c43)
 
 
 son durumda aşağıdaki sonuca ulaştım. Başta 0.82 olarak verilen eğitim ve test verileri arasındaki başarı değerini, yaptığım değişikliklerle, 0.86'ya yükselttim.  
@@ -132,9 +155,9 @@ drop out fonksiyonunda en iyi sonucu 0.1 değeri verdi. bunu kullanabiliriz.
 leaklyrelu: Eğitim Doğruluğu:   0.8445333242416382 Test Doğruluğu:  0.8450999855995178 Eğitim Kaybı:  0.42953500151634216 Test Kaybı:  0.4341968894004822    
 Swih: Eğitim Doğruluğu:         0.839900016784668 Test Doğruluğu:   0.8389999866485596 Eğitim Kaybı:  0.43628203868865967 Test Kaybı:  0.4351336658000946     
 
-#diğer denemeler    
+**Diğer Denemeler**                
 
-#drop out son katmana eklendi:(overfitting var gibi)       
+#drop out son katmana eklendi(overfitting var gibi):                       
 Eğitim Doğruluğu:   0.8705166578292847 
 Test Doğruluğu:     0.8529999852180481 
 Eğitim Kaybı:       0.35146471858024597 
