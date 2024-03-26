@@ -8,3 +8,4 @@ Fashion MNIST veri seti, giysi ve aksesuarların siyah-beyaz görüntülerinden 
 **Veri Yüklemesi**: Fashion MNIST veri seti TensorFlow kütüphanesi aracılığıyla yüklenmiştir. Eğitim ve test veri setleri olarak ayrılmıştır.
 **Model Oluşturma**: Yapay sinir ağı modeli, TensorFlow ve Keras kullanılarak oluşturulmuştur. Model, giriş katmanı, gizli katman(lar) ve çıkış katmanı içerir. 
 **Eğitim ve Değerlendirme**: Model, eğitim veri seti üzerinde eğitilmiş ve ardından test veri seti üzerinde değerlendirilmiştir. Eğitim ve test başarısı kaydedilmiş ve sonuçlar analiz edilmiştir. 
+![image](https://github.com/kursova/Fashion-MNIST-Veri-Seti-ile-Yapay-Sinir-Agi-Uygulamasi/assets/9978930/3b39e7ab-e682-4d67-8ab5-98e12f27294e)
