@@ -8,8 +8,10 @@ fashion_mnist = tf.keras.datasets.fashion_mnist
 
 (train_images, train_labels), (test_images, test_labels) = fashion_mnist.load_data()
 
-'''Fashion MNIST veri seti 10 kategoride toplamda 70.000 gri tonlamalı görüntü içerir. 
-Görüntüler, (28 x 28 piksel) tek tek giyim eşyalarını göstermektedir'''
+'''
+Fashion MNIST veri seti 10 kategoride toplamda 70.000 gri tonlamalı görüntü içerir. 
+Görüntüler, (28 x 28 piksel) tek tek giyim eşyalarını göstermektedir
+'''
 
 #örnek veri (eğitim verisi)
 plt.figure()
@@ -19,7 +21,7 @@ plt.grid(False)
 plt.show()
 
 
-#örnek veri (eğitim verisi)
+#örnek veri (test verisi)
 plt.figure()
 plt.imshow(test_images[0])
 plt.colorbar()
@@ -43,20 +45,17 @@ model = tf.keras.Sequential([
     tf.keras.layers.Dense(10,activation="softmax")
 ])
 
-
-
-
+#özet
 model.summary()
 
-# modeli derle(compile)
-
-model.compile(optimizer='adam', #optimizerı adagrad olarak değiştirdim.
-              loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
+# modeli derleyelim (compile)
+model.compile(optimizer='adam', #diğer optimizasyon yöntemleri: SGD, Adadelta, Adagrad, RMSProd
+              loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),#verilerimiz 0-1 arasında değişseydi CategoricalCrossentropy kullanırdık.
               metrics=['accuracy'])
 
 #uygulama
 
-hist=model.fit(train_images, train_labels,validation_data=(test_images,test_labels), epochs=8)
+hist=model.fit(train_images, train_labels,validation_data=(test_images,test_labels), epochs=8) #farklı epoch numaraları denedik.
 
 test_loss, test_acc = model.evaluate(test_images,  test_labels, verbose=2)
 
@@ -70,7 +69,7 @@ print("Eğitim Kaybı: ",
 print("Test Kaybı: ",
      hist.history['val_loss'][-1])
 
- #Eğitim ve dtest oğrulama kaybını ve doğruluğunu görselleştirme 
+ #Eğitim ve dtest doğrulama kaybını ve doğruluğunu görselleştirme 
     
 plt.plot(hist.history['loss'], label='Eğitim Kaybı') 
 plt.plot(hist.history['val_loss'], label='Doğrulama Kaybı') 
@@ -86,52 +85,66 @@ plt.ylabel('Doğruluk')
 plt.legend() 
 plt.show()
 
-#nöron sayısını 16 - 8 yaptığımda accuracy 0,87 test accuracy 0.86 oldu. loss: 0,34 val_loss:0,39
+'''
+son durumda aşağıdaki sonuca ulaştım. Başta 0.82 olarak verilen eğitim ve test verileri arasındaki başarı değerini, yaptığım değişikliklerle, 0.86'ya yükselttim.
+Eğitim Doğruluğu:   0.8628666400909424
+Test Doğruluğu:     0.8468000292778015
+Eğitim Kaybı:       0.37758514285087585
+Test Kaybı:         0.41748255491256714
+'''
+#bu sonuca ulaşana kadar birçok deneme yaptım. Bu denemeleri ve aldığım sonuçları aşağıda görebilirsiniz.
 
-# 8 nöronluk yeni bir katman eklediğimde accuracy 0.8650 test accuracy 0.8534 loss:0,3763 val_loss:0.4281
+#aktivasyon kodunu elu yaptığımızda değerlerimiz kötüleşti.
+'''
+accuracy: 0.7509 - loss: 0.7308 - val_accuracy: 0.7423 - val_loss: 0.7426
 
-#optimizerı adagrad yaptığımızda accuracy: 0.8818 - loss: 0.3372 - val_accuracy: 0.8574 - val_loss: 0.4114
-#0.88'e 0.85 olması overfitting anlamına gelir mi? yoksa daha büyük bir fark mı olmalıydı?
+leaky relu kullanınca : accuracy: 0.8072 - loss: 0.5833 - val_accuracy: 0.7955 - val_loss: 0.6080
+relu olarak değiştirdiğimizde ve dropout kullanarak düzenlileştirme yaptığımızda accuracy: 0.8443  Test accuracy: 0.844299 loss: 0.4480
 
-#aktivasyon kodunu elu yaptığımızda değerlerimiz kötüleşti.accuracy: 0.7509 - loss: 0.7308 - val_accuracy: 0.7423 - val_loss: 0.7426
-# leaky relu kullanınca : accuracy: 0.8072 - loss: 0.5833 - val_accuracy: 0.7955 - val_loss: 0.6080
-#relu olarak değiştirdiğimizde ve dropout kullanarak düzenlileştirme yaptığımızda accuracy: 0.8443  Test accuracy: 0.844299 loss: 0.4480
-
-#son durumda;
-
-#nöronlardan biri 16 olarak değiştirildi. yeni katman eklendi. dropout eklendi. epoch 15 olarak değiştirildi.
-#accuracy: 0.8809 - loss: 0.3292 - val_accuracy: 0.8574 - val_loss: 0.4006
+nöronlardan biri 16 olarak değiştirildi. yeni katman eklendi. dropout eklendi. epoch 15 olarak değiştirildi.
+accuracy: 0.8809 - loss: 0.3292 - val_accuracy: 0.8574 - val_loss: 0.4006
+'''
 
 #drop out kullanımı
-#drop out 0.2:  accuracy: 0.8242 - loss: 0.4896 - val_accuracy: 0.8376 - val_loss: 0.457
-#rop out 0.3: accuracy: 0.7916 - loss: 0.5778 - val_accuracy: 0.7974 - val_loss: 0.5574
-#drop out 0.4: accuracy: 0.7584 - loss: 0.6606 - val_accuracy: 0.8134 - val_loss: 0.5313               
-#drop out 0.1: accuracy: 0.8468 - loss: 0.4271 - val_accuracy: 0.8441 - val_loss: 0.4336
-#drop out fonksiyonunda en iyi sonucu 0.1 değeri verdi. bunu kullanabiliriz.
-
+'''
+drop out 0.2:  accuracy: 0.8242 - loss: 0.4896 - val_accuracy: 0.8376 - val_loss: 0.457
+drop out 0.3: accuracy: 0.7916 - loss: 0.5778 - val_accuracy: 0.7974 - val_loss: 0.5574
+drop out 0.4: accuracy: 0.7584 - loss: 0.6606 - val_accuracy: 0.8134 - val_loss: 0.5313               
+drop out 0.1: accuracy: 0.8468 - loss: 0.4271 - val_accuracy: 0.8441 - val_loss: 0.4336
+drop out fonksiyonunda en iyi sonucu 0.1 değeri verdi. bunu kullanabiliriz.
+'''
 #katman sayılarını arttırıp azaltalım
-
-#8: Eğitim Kaybı:  0.4637913703918457 Test Kaybı:  0.45508232712745667
-#8-16: Eğitim Doğruluğu:  0.8410000205039978 Test Doğruluğu:  0.842199981212616 Eğitim Kaybı:  0.4414486587047577 Test Kaybı:  0.4367920458316803
-#8-16-32: Eğitim Doğruluğu:  0.8458499908447266 Test Doğruluğu:  0.843999981880188 Eğitim Kaybı:  0.42673638463020325 Test Kaybı:  0.43116965889930725
-#8-16-32-64: Eğitim Doğruluğu:  0.8468999862670898 Test Doğruluğu:  0.848800003528595 Eğitim Kaybı:  0.4220840632915497 Test Kaybı:  0.42227157950401306
-
+'''
+8-16: Eğitim Doğruluğu:         0.8410000205039978 Test Doğruluğu:  0.842199981212616 Eğitim Kaybı:  0.4414486587047577 Test Kaybı:  0.4367920458316803
+8-16-32: Eğitim Doğruluğu:      0.8458499908447266 Test Doğruluğu:  0.843999981880188 Eğitim Kaybı:  0.42673638463020325 Test Kaybı: 0.43116965889930725
+8-16-32-64: Eğitim Doğruluğu:   0.8468999862670898 Test Doğruluğu:  0.848800003528595 Eğitim Kaybı:  0.4220840632915497 Test Kaybı:  0.42227157950401306
+'''
 # aktivasyon fonksiyonlarını değiştirelim
-#leaklyrelu: Eğitim Doğruluğu:  0.8445333242416382 Test Doğruluğu:  0.8450999855995178 Eğitim Kaybı:  0.42953500151634216 Test Kaybı:  0.4341968894004822
-#swih: Eğitim Doğruluğu:  0.839900016784668 Test Doğruluğu:  0.8389999866485596 Eğitim Kaybı:  0.43628203868865967 Test Kaybı:  0.4351336658000946
-
+'''
+leaklyrelu: Eğitim Doğruluğu:   0.8445333242416382 Test Doğruluğu:  0.8450999855995178 Eğitim Kaybı:  0.42953500151634216 Test Kaybı:  0.4341968894004822
+Swih: Eğitim Doğruluğu:         0.839900016784668 Test Doğruluğu:   0.8389999866485596 Eğitim Kaybı:  0.43628203868865967 Test Kaybı:  0.4351336658000946
+'''
 #diğer denemeler
 #drop out son katmana eklendi:(overfitting var gibi) 
 '''
-Eğitim Doğruluğu:  0.8705166578292847 Test Doğruluğu:  0.8529999852180481 Eğitim Kaybı:  0.35146471858024597 Test Kaybı:  0.4062526822090149
+Eğitim Doğruluğu:   0.8705166578292847 
+Test Doğruluğu:     0.8529999852180481 
+Eğitim Kaybı:       0.35146471858024597 
+Test Kaybı:         0.4062526822090149
 '''
 #drop out 0.2 yaptım: 
 '''
-Eğitim Doğruluğu:  0.8673333525657654 Test Doğruluğu:  0.8460000157356262 Eğitim Kaybı:  0.36401379108428955 Test Kaybı:  0.4285202622413635
+Eğitim Doğruluğu:   0.8673333525657654 
+Test Doğruluğu:     0.8460000157356262 
+Eğitim Kaybı:       0.36401379108428955 
+Test Kaybı:         0.4285202622413635
 '''
 #gelu kullandığımızda: 
 '''
-Eğitim Doğruluğu:  0.8684999942779541 Test Doğruluğu:  0.8529000282287598 Eğitim Kaybı:  0.356443852186203 Test Kaybı:  0.3989572525024414
+Eğitim Doğruluğu:   0.8684999942779541 
+Test Doğruluğu:     0.8529000282287598 
+Eğitim Kaybı:       0.356443852186203 
+Test Kaybı:         0.3989572525024414
 '''
 #epoch değerinini arttırdığımızda overfitting oluştu: 
 ''' 
