@@ -1,3 +1,4 @@
+# %% [code]
 #gerekli kütüphaneleri yükleme
 import tensorflow as tf
 import numpy as np
@@ -13,14 +14,14 @@ Fashion MNIST veri seti 10 kategoride toplamda 70.000 gri tonlamalı görüntü 
 Görüntüler, (28 x 28 piksel) tek tek giyim eşyalarını göstermektedir
 '''
 
-
 #örnek veri (eğitim verisi)
 plt.figure()
 plt.imshow(train_images[0])
 plt.colorbar()
 plt.grid(False)
 plt.show()
-![image](https://www.kaggleusercontent.com/kf/168832389/eyJhbGciOiJkaXIiLCJlbmMiOiJBMTI4Q0JDLUhTMjU2In0..ZIAgGu5FmZjqpfSEBKJfrg.y336fifw-ixlQ2n2jJVPDfxOoC2OWW6-k_UcgBgSHwYdyVclWetQ_xYzmSdRv4fdXlMuOXvpg3PffCjrS5ru6s2JbP7MS-tmiogvcU4ooxXno0NHsfCPL5i20UBwAX-4FaoYkejwS2_4VcJREEMotSxRupCG3tcAEIwq9BAJM7fldpclMgPaBURRHCLUrYJ_1C2KcVrqd7ttpoVp7Zlvm12k3zgmnzBmH_J1KXG7vmfHJaHFzhPiGX06elhSS2rhnUeLL7sTiw7uJJweVm_Bx1AQUmCYl4l_fFzqPRtxgabb1g5seRjZwhAxviboc8X8EFRU6ib2k8QcCCh1cm0-yIJ9zEe_8VaFq1UFtKN6fXnUZ53R3_W5UcQPotgZSHbVZaS-eBvLM2CnHnEdt237XLdX48vWqaJmRFs4g2aAmv9wgweVWFXocVOfaz8f6sX6zdYpYxHVfFY3iWWPioT_y2ZQ1-x9gn0olY08-0tj25P_4qk1B3GKPs9z6pOtFO_QrhVILln6Ila5c1rWV9Qu2pPt0RFdYGbFl6QQNFh7JxuQNAubYwhDhrtG36ykoEsy_N9leOFvmG80ZrEg5DUdanriZSPI69kcoHzw2qTLqa6YPm6J21jq2Cc_ysazyNKbV1YuBqAePj3DrArNQ0q7_uWChHAeXM18TzTyMAE029IbDQ1ghwG9E-FHqFspbt6Q.qCa4-fZDBe-vIQ832BKIcg/__results___files/__results___0_0.png)
+
+
 #örnek veri (test verisi)
 plt.figure()
 plt.imshow(test_images[0])
@@ -50,7 +51,7 @@ model.summary()
 
 # modeli derleyelim (compile)
 model.compile(optimizer='adam', #diğer optimizasyon yöntemleri: SGD, Adadelta, Adagrad, RMSProd
-              loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),#verilerimiz 0-1 arasında değişseydi CategoricalCrossentropy kullanırdık.
+              loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=False),#verilerimiz 0-1 arasında değişseydi CategoricalCrossentropy kullanırdık.
               metrics=['accuracy'])
 
 #uygulama
