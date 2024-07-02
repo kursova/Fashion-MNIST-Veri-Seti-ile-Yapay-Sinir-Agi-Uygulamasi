@@ -326,3 +326,42 @@ df
 
 l=['var1', 'var2', 'var4']
 
+for i in l:
+    print(i in df)
+    
+df['var4']=df['var1']/df['var2']
+
+df.drop('var4', axis=1, inplace=True)
+
+df
+
+#gözlem ve değişken seçimi (loc / iloc)
+
+import numpy as np
+import pandas as pd
+
+m=np.random.randint(1,30,size=(10,3))
+df=pd.DataFrame(m, columns=['var1','var2', 'var3'])
+df
+
+#loc
+
+df.loc[0:3] #3 dahil
+
+df.iloc[0:3] #3 hariç
+ 
+df.loc[0:3, 'var3'] #düzgün çalışır
+df.iloc[0:3, 'var3'] #hata alır. aynı köşeli parantez içerisinde "var" yazamayız bunun için loc kullanmak gerek ya da aşağıdaki gibi kullanmak lazım 
+df.iloc[0:3]['var3']
+
+df[0:2][['var1', 'var2']] # burada ikincisinde çift köşeli parantez kullandık çünkü fancy kullanımı yaptık
+
+df.var1 # bu da kullanılır
+
+df[df.var1>15]['var2']
+
+df[(df.var1>15) & (df.var3<5)]
+
+df.loc[(df.var1>15), ['var2','var1']] # ya da 
+df[(df.var1>15)] [['var2','var1']]
+
