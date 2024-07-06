@@ -1,6 +1,7 @@
 # %% [code]
 # %% [code]
 # %% [code]
+# %% [code]
 # This Python 3 environment comes with many helpful analytics libraries installed
 # It is defined by the kaggle/python Docker image: https://github.com/kaggle/docker-python
 # For example, here's several helpful packages to load
@@ -365,3 +366,93 @@ df[(df.var1>15) & (df.var3<5)]
 df.loc[(df.var1>15), ['var2','var1']] # ya da 
 df[(df.var1>15)] [['var2','var1']]
 
+m=np.arange(1,10).reshape((3,3))
+m
+
+df=pd.DataFrame(m,columns=['var1', 'var2', 'var3'])
+df
+df.columns=('deg1', 'deg2', 'deg3')
+
+df.ndim
+df.axes
+df.size
+
+
+s1=np.random.randint(10,size=5)
+s2=np.random.randint(10,size=5)
+s3=np.random.randint(10,size=5)
+
+sozluk={'var1': s1, 
+        'var2':s2, 
+        'var3':s3}
+df=pd.DataFrame(sozluk)
+df
+
+df.index=["a", "b","c","d","e"]
+df.drop("a", axis=0, inplace=True) #axis =0 yazmasak da aynı ancak sütun düşürmek istersek axis=1 yazmalıydık // inplace kalıcı olmasını sağlar 
+
+
+df2=df+7
+df
+
+pd.concat([df,df2], ignore_index=True, join='inner') #birleştirme ignore_index=True yaptığımızda indeks problemi kalmaz
+
+pd.concat([df,df2], join_axes=[df2.columns]) #join axes ile hangi tablonun kolonlarını alsın onu yazdık. left right birleştirme gibi
+
+import pandas as pd
+import numpy as np
+df1=pd.DataFrame({"calisanlar": ["ali", "veli", "ayse", "fatma"],
+    "grup": ["muhasebe", "muhendislik", "muhendislik", "ik"]})
+
+df2=pd.DataFrame({"calisanlar": ["ayse", "ali", "veli",  "fatma"],
+     "ilk_giris": [2010,2009,2014,2019]})
+
+
+df1
+df2
+
+pd.merge(df1,df2, on="calisanlar")
+
+import seaborn as sns
+
+df=sns.load_dataset("planets")
+df
+
+df.describe().T
+df.dropna().describe().T
+
+
+df=pd.DataFrame({"gruplar": ["A", "B", "C","A", "B", "C"],
+                "veri": [10,11,22,35,80,60], 
+                "donem": [2020,2021,2022,2023,2024,2025]},
+               columns=["gruplar", "veri", "donem"])
+
+df
+
+df.groupby("gruplar").mean() # tek bir değişken olduğu için böyle yapabildik.
+
+
+df.groupby("method")["orbital_period"].mean() #birden fazla değişken varsa önce neyi gruplamak istediğimizi sonra hangi  sütunun değerini bulmak istediğimizi bu şekilde buluruz.
+
+df.groupby("method")["orbital_period"].describe()
+
+df.groupby("method").aggregate([min, np.mean,max])
+
+df.groupby("method")["orbital_period"].aggregate([min, np.mean,max]) #aggregate bize özel bir işlem yapmamızı sağlar. yani biz burda mean vs değil kendi oluşturduğumuz bir grup işleme göre 
+#gruplandırma yapmak istiyoruz. aggregate yazıp liste şeklinde içerisine hangi işlemleri yapmasını istediğimizi yazdık. min ve max pandas içerisinde var zaten ancak mean işlemini
+#numpy içinden çağırıyoruz. bu nedenle başına np koyduk. ayrıca min ve maxı pandas içinde olduğu için tırnak içine de alabilirdik.
+
+df.groupby("method").aggregate([min, np.mean,max])
+df
+
+df.groupby("method").aggregate([min, np.mean,max])
+
+
+df.groupby("method").aggregate({"orbital_period": "min",
+                               "mass": "min"})
+
+
+df.groupby("gruplar").aggregate({"veri": min, "donem": max})
+
+df=df[:,1:]
+df.transform(lambda x: x-x.mean())
