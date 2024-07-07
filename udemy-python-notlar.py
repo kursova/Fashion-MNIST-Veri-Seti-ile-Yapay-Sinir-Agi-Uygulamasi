@@ -454,5 +454,26 @@ df.groupby("method").aggregate({"orbital_period": "min",
 
 df.groupby("gruplar").aggregate({"veri": min, "donem": max})
 
-df=df[:,1:]
-df.transform(lambda x: x-x.mean())
+df=df.iloc[:,1:]
+df.transform(lambda x: x-x.mean()) #transfom istediğimiz bir fonksiyonu tüm değerleri uygulamamızı sağlar
+
+
+df.apply(np.sum) #sütunları topladı
+
+
+
+import pandas as pd 
+import seaborn as sns 
+titanic=sns.load_dataset('titanic')
+titanic.head()
+titanic.columns
+
+titanic.groupby("sex")["survived"].mean()
+
+titanic.groupby(["sex","class"])[["survived"]].aggregate("mean").unstack() #unstack colonları sağa doğru dizerek okunmasını kolaylaştırıyor. T gibi
+
+titanic.pivot_table("survived", index="sex", columns="class") #pivot kullanarak yukarıdaki işlemi daha kolay bir şekilde yaptık
+
+age=pd.cut(titanic["age"], [0,18,90])
+age.head(10)
+titanic.pivot_table("survived", ["sex", age], "class") #age'i dışarıdan aldık veri setinden değil bu nedenle tırnak içine almadık. alırsak da çalışır ancak farkl sonuç verir.
