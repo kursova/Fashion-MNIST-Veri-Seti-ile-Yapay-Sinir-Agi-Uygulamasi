@@ -477,3 +477,87 @@ titanic.pivot_table("survived", index="sex", columns="class") #pivot kullanarak 
 age=pd.cut(titanic["age"], [0,18,90])
 age.head(10)
 titanic.pivot_table("survived", ["sex", age], "class") #age'i dışarıdan aldık veri setinden değil bu nedenle tırnak içine almadık. alırsak da çalışır ancak farkl sonuç verir.
+
+
+
+planets=sns.load_dataset('planets')
+
+planets.head()
+
+df=planets.copy()
+
+df.info()
+
+df.dtypes 
+#objectleri kategoriye dönüştürürsek iyi olur
+
+df.method=pd.Categorical(df.method)
+df.shape
+df.columns
+df.describe().T #describe eksik değişkenleri göz ardı eder ve kategorik değişkenleri dışarıda bırakır
+df.describe(include="all").T  #include ekleyerek kategorik değerleri de dahil ederiz.
+
+df.isnull().values.any()
+
+df.isnull().sum()
+
+df["degisken_ismi"].fillna(0,inplace=True)  #böyle diyerek tüm null değerleri sıfır yapabiliriz
+df["degisken_ismi"].fillna(dfdegisken_ismi.mean(),inplace=True) #sıfır yerine ortalama değer koyabilriz
+df.fillna(mean(),inplace=True) # tüm değerlere ortalama atarız tek sütun yerine 
+
+
+import seaborn as sns 
+planets=sns.load_dataset("planets")
+df=planets.copy()
+
+df.head()
+
+#kategorik değişkenlerin incelenmesi
+kat_df=df.select_dtypes(include=["object"]) # tablodan herhangi bir data tipinin seçimi
+kat_df
+
+kat_df.method.unique() #uniq değerleri getirme 
+
+kat_df["method"].value_counts() #böyle yazınca hangi kategoriden kaç tane var onu veriyor
+
+kat_df["method"].value_counts().count() # kaç farklı kategori var 
+
+import pandas as pd
+
+df["method"].value_counts().plot.barh() #bar grafiği çizdirdik
+
+import numpy as np
+#sürekli değişken işlemleri
+
+print(df.dtypes)
+
+df_num=df.select_dtypes(include=["float64", "int64"])
+
+df_num.describe().T
+
+
+#dağılım grafikleri
+
+#barplot ---kategorik değişkkenleri görselleştirmek için kullanılır 
+
+import seaborn as sns 
+
+diamonds=sns.load_dataset("diamonds")
+df=diamonds.copy()
+
+df.info()
+
+df.describe().T
+
+df["cut"].value_counts() #burada ordinal bir değerlendirme var yani aralarında bir sıralama var.bunu belirtmemiz lazım 
+
+from pandas.api.types import CategoricalDtype
+
+df.cut=df.cut.astype(CategoricalDtype(ordered=True)) # cut kolonundaki kategorilerin tipini sıralı ordinal bir şejilde değştir
+
+df.cut.head(0) # burada sıralamayı kendi yaptığı için hatalı yapmış bizim sıralatmamız lazım 
+
+df_kategoriler=["Fair", "Good", "Very Good", "Premium", "Ideal"]
+df_kategoriler
+
+df.cut=df.cut.astype(CategoricalDtype(categories= df_kategoriler , ordered=True))
