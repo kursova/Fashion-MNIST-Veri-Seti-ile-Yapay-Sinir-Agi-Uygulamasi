@@ -561,3 +561,36 @@ df_kategoriler=["Fair", "Good", "Very Good", "Premium", "Ideal"]
 df_kategoriler
 
 df.cut=df.cut.astype(CategoricalDtype(categories= df_kategoriler , ordered=True))
+
+
+
+df["cut"].value_counts().plot.barh();#baştaki bilgiyi kaldırmak için sonuna ; koyduk
+(
+df["cut"].
+    value_counts().
+    plot.barh().
+    set_title("cut değişkeni"));#başlık ekleme
+
+#daha iyi bir görselleştirme için seaborn kullanalım 
+
+sns.barplot(x="cut", y=df.cut.index, data=df);
+
+import seaborn as sns 
+from pandas.api.types import CategoricalDtype
+
+diamonds=sns.load_dataset("diamonds")
+
+df=diamonds.copy()
+
+cut_kategoriler=["Fair", "Good", "Very Good", "Premium", "Ideal"]
+
+df.cut=df.cut.astype(CategoricalDtype(categories= cut_kategoriler , ordered=True))
+df
+
+sns.catplot(x="cut", y="price", data=df); #birden fazla kategoriyi karşılaştırmak için catplot kullanıyoruz
+
+sns.barplot(x="cut", y="price", hue="color",data=df); #barplot ve hue kullanarak boyut ekledik
+
+#boyut eklediğimizde soldaki değerlerin değiştiğini gördük yani aralık değerleri değiştri . bunun nedeni veriyi cut ve color olarak gruplayarak priceinı getirdi.yani;
+
+df.groupby(["cut", "color"])["price"].mean()
